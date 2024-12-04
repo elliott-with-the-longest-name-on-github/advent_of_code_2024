@@ -1,0 +1,41 @@
+# Compiled output
+/target/
+
+# Debug log files
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Lock files (not always ignored in libraries)
+/Cargo.lock
+
+# IDE and Editor settings
+# JetBrains IDEs (e.g., CLion, IntelliJ)
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Emacs
+*~
+
+# Vim
+*.swp
+*.swo
+Session.vim
+
+# Eclipse
+.project
+.cproject
+.settings/
+
+# MacOS files
+.DS_Store
+
+# Windows files
+Thumbs.db
+ehthumbs.db
