@@ -46,6 +46,6 @@ mod tests {
     #[test]
     fn check_answer_two() {
         let result = run(Part::Two);
-        assert_eq!(result, 9);
+        assert_eq!(result, 1886);
     }
 }

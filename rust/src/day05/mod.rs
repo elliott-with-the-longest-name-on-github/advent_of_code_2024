@@ -2,9 +2,16 @@ pub mod input;
 pub mod part1;
 pub mod part2;
 
+use std::collections::{HashMap, HashSet};
+
 use crate::{Output, Part};
 
-pub type Input = Vec<u32>;
+pub type Input = PrintConfig;
+
+pub struct PrintConfig {
+    pub rules: HashMap<u32, HashSet<u32>>,
+    pub updates: Vec<Vec<u32>>,
+}
 
 pub fn run(part: Part) -> Output {
     let input = match part {
@@ -25,12 +32,12 @@ mod tests {
     #[test]
     fn check_answer_one() {
         let result = run(Part::One);
-        assert_eq!(result, 0);
+        assert_eq!(result, 1447663);
     }
 
     #[test]
     fn check_answer_two() {
         let result = run(Part::Two);
-        assert_eq!(result, 0);
+        assert_eq!(result, 6257);
     }
 }
