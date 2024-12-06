@@ -6,15 +6,53 @@ use std::collections::HashMap;
 
 use crate::{Output, Part};
 
-pub type Input = ParsedMap;
+pub type Input = Grid;
 
-pub struct ParsedMap {
-    blockages_by_x: HashMap<u32, Vec<u32>>,
-    blockages_by_y: HashMap<u32, Vec<u32>>,
-    start_x: u32,
-    start_y: u32,
-    x_len: u32,
-    y_len: u32,
+#[derive(Clone)]
+pub struct GridPoint {
+    pub x: i32,
+    pub y: i32,
+    pub is_blockage: bool,
+}
+
+pub struct Grid {
+    pub grid: HashMap<(i32, i32), GridPoint>,
+    pub start_point: GridPoint,
+}
+
+impl Grid {
+    pub fn get_point_in_direction<'a>(
+        &'a self,
+        from_x: i32,
+        from_y: i32,
+        direction: &Direction,
+    ) -> Option<&'a GridPoint> {
+        match direction {
+            Direction::Up => self.grid.get(&(from_x, from_y - 1)),
+            Direction::Down => self.grid.get(&(from_x, from_y + 1)),
+            Direction::Left => self.grid.get(&(from_x - 1, from_y)),
+            Direction::Right => self.grid.get(&(from_x + 1, from_y)),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, Hash, Clone)]
+pub enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+impl Direction {
+    pub fn rotate(&self) -> Direction {
+        match self {
+            Direction::Up => Direction::Right,
+            Direction::Right => Direction::Down,
+            Direction::Down => Direction::Left,
+            Direction::Left => Direction::Up,
+        }
+    }
 }
 
 pub fn run(part: Part) -> Output {
@@ -41,7 +79,7 @@ mod tests {
 
     #[test]
     fn check_answer_two() {
-        let result = run(Part::ExampleTwo);
-        assert_eq!(result, 0);
+        let result = run(Part::Two);
+        assert_eq!(result, 6);
     }
 }
