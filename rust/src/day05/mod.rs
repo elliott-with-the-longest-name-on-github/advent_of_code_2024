@@ -32,7 +32,7 @@ mod tests {
     #[test]
     fn check_answer_one() {
         let result = run(Part::One);
-        assert_eq!(result, 1447663);
+        assert_eq!(result, 4766);
     }
 
     #[test]
