@@ -59,22 +59,18 @@ fn travel_until_blockage(
         Direction::Right => (blockages_by_y.get(current_y), current_x, bound_y - 1),
     };
     let stop_coord = match direction {
-        Direction::Left | Direction::Up => match blockages_in_axis.and_then(|b| {
-            b.iter()
-                .filter(|coord| *coord < applicable_coordinate)
-                .last()
-        }) {
+        Direction::Left | Direction::Up => match blockages_in_axis
+            .and_then(|b| b.iter().rev().find(|coord| *coord < applicable_coordinate))
+        {
             Some(blockage_coord) => blockage_coord + 1,
             None => {
                 stop = true;
                 last_traversable_coordinate
             }
         },
-        Direction::Right | Direction::Down => match blockages_in_axis.and_then(|b| {
-            b.iter()
-                .filter(|coord| *coord > applicable_coordinate)
-                .next()
-        }) {
+        Direction::Right | Direction::Down => match blockages_in_axis
+            .and_then(|b| b.iter().find(|coord| *coord > applicable_coordinate))
+        {
             Some(blockage_coord) => blockage_coord - 1,
             None => {
                 stop = true;
