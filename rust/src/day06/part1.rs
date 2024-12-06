@@ -62,7 +62,7 @@ fn travel_until_blockage(
         Direction::Left | Direction::Up => match blockages_in_axis.and_then(|b| {
             b.iter()
                 .filter(|coord| *coord < applicable_coordinate)
-                .max()
+                .last()
         }) {
             Some(blockage_coord) => blockage_coord + 1,
             None => {
@@ -73,7 +73,7 @@ fn travel_until_blockage(
         Direction::Right | Direction::Down => match blockages_in_axis.and_then(|b| {
             b.iter()
                 .filter(|coord| *coord > applicable_coordinate)
-                .min()
+                .next()
         }) {
             Some(blockage_coord) => blockage_coord - 1,
             None => {
