@@ -79,7 +79,7 @@ mod tests {
 
     #[test]
     fn check_answer_two() {
-        let result = run(Part::Two);
+        let result = run(Part::ExampleTwo);
         assert_eq!(result, 6);
     }
 }

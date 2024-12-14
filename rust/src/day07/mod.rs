@@ -4,7 +4,12 @@ pub mod part2;
 
 use crate::{Output, Part};
 
-pub type Input = Vec<u32>;
+pub type Input = Vec<Equation>;
+
+pub struct Equation {
+    goal: i64,
+    numbers: Vec<i64>,
+}
 
 pub fn run(part: Part) -> Output {
     let input = match part {
@@ -24,8 +29,11 @@ mod tests {
 
     #[test]
     fn check_answer_one() {
-        let result = run(Part::One);
-        assert_eq!(result, 0);
+        let result = match run(Part::One) {
+            Output::I64(val) => val,
+            _ => panic!(),
+        };
+        assert_eq!(result, 4998764814652);
     }
 
     #[test]

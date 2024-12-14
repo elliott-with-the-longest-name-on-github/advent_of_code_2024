@@ -5,8 +5,6 @@ use std::collections::{HashMap, HashSet};
 pub fn solve(input: &Input) -> Output {
     let mut current_direction = Direction::Up;
     let mut current_point = input.start_point.clone();
-    let mut visited_cols = HashSet::from([(current_direction.clone(), current_point.x)]);
-    let mut visited_rows = HashSet::from([(current_direction.clone(), current_point.y)]);
     let mut visited_points =
         HashSet::from([(current_direction.clone(), current_point.x, current_point.y)]);
     let mut additional_blockages = HashSet::new();
@@ -14,51 +12,42 @@ pub fn solve(input: &Input) -> Output {
         input.get_point_in_direction(current_point.x, current_point.y, &current_direction)
     {
         let next_direction = current_direction.rotate();
+
         if (point.is_blockage) {
             current_direction = next_direction;
             continue;
         }
 
-        let direction_visited = match next_direction {
-            Direction::Down | Direction::Up => {
-                visited_cols.contains(&(next_direction.clone(), current_point.x))
-            }
-            Direction::Left | Direction::Right => {
-                visited_cols.contains(&(next_direction.clone(), current_point.y))
-            }
-        };
+        let mut theoretical_travel_point = point.clone();
+        let mut theoretical_travel_direction = next_direction.clone();
+        loop {
+            let next_point = match input.get_point_in_direction(
+                theoretical_travel_point.x,
+                theoretical_travel_point.y,
+                &theoretical_travel_direction,
+            ) {
+                Some(p) => p.clone(),
+                None => break,
+            };
 
-        if (direction_visited) {
-            // The current point is an intersection with a line we've already travelled, in a direction we've already travelled.
-            // If there are no obstructions before we reach a point we've already touched, this is a loop.
-            // We can start theoretically traveling in that direction until we hit a block or a point we've already travelled.
-            let mut theoretical_travel_point = current_point.clone();
-            loop {
-                if (visited_points.contains(&(
-                    next_direction.clone(),
-                    theoretical_travel_point.x,
-                    theoretical_travel_point.y,
-                ))) {
-                    additional_blockages.insert((point.x, point.y));
-                    break;
-                }
-                if (theoretical_travel_point.is_blockage) {
-                    break;
-                }
-                theoretical_travel_point = match input.get_point_in_direction(
-                    theoretical_travel_point.x,
-                    theoretical_travel_point.y,
-                    &next_direction,
-                ) {
-                    Some(p) => p.clone(),
-                    None => break,
-                }
+            if (next_point.is_blockage) {
+                theoretical_travel_direction = theoretical_travel_direction.rotate();
+                continue;
             }
-        };
 
-        visited_cols.insert((current_direction.clone(), current_point.x));
-        visited_rows.insert((current_direction.clone(), current_point.y));
-        visited_points.insert((current_direction.clone(), current_point.x, current_point.y));
+            if (visited_points.contains(&(
+                theoretical_travel_direction.clone(),
+                next_point.x,
+                next_point.y,
+            ))) {
+                additional_blockages.insert((point.x, point.y));
+                break;
+            }
+
+            theoretical_travel_point = next_point;
+        }
+
+        visited_points.insert((current_direction.clone(), point.x, point.y));
         current_point = point.clone();
     }
 
