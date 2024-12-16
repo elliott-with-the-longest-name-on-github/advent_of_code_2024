@@ -27,6 +27,7 @@ pub mod day22;
 pub mod day23;
 pub mod day24;
 pub mod day25;
+pub mod util;
 
 // Used as a flag to indicate which part of a day to run.
 pub enum Part {

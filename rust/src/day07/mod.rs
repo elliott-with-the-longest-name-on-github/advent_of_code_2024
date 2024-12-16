@@ -38,7 +38,10 @@ mod tests {
 
     #[test]
     fn check_answer_two() {
-        let result = run(Part::Two);
-        assert_eq!(result, 0);
+        let result = match run(Part::Two) {
+            Output::I64(val) => val,
+            _ => panic!(),
+        };
+        assert_eq!(result, 37598910447546);
     }
 }

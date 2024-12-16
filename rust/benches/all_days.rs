@@ -336,12 +336,16 @@ pub fn benchmark_day14_input(c: &mut Criterion) {
 
 pub fn benchmark_day14_part01(c: &mut Criterion) {
     let input = black_box(day14::input::read());
-    c.bench_function("Day 14, Part 1", |b| b.iter(|| day14::part1::solve(&input)));
+    c.bench_function("Day 14, Part 1", |b| {
+        b.iter(|| day14::part1::solve(&input, 101, 103))
+    });
 }
 
 pub fn benchmark_day14_part02(c: &mut Criterion) {
     let input = black_box(day14::input::read());
-    c.bench_function("Day 14, Part 2", |b| b.iter(|| day14::part2::solve(&input)));
+    c.bench_function("Day 14, Part 2", |b| {
+        b.iter(|| day14::part2::solve(&input, 101, 103))
+    });
 }
 
 criterion_group!(

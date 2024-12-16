@@ -34,6 +34,43 @@ impl Grid {
             Direction::Right => self.grid.get(&(from_x + 1, from_y)),
         }
     }
+
+    pub fn print(&self, current_x: i32, current_y: i32, direction: &Direction) {
+        let mut max_x = 0;
+        let mut max_y = 0;
+        for (x, y) in self.grid.keys() {
+            max_x = *x.max(&max_x);
+            max_y = *y.max(&max_y);
+        }
+        // capacity is dimension + newlines for every row
+        let mut display = String::with_capacity(((max_x * max_y) + max_y).try_into().unwrap());
+        for y in 0..=max_y {
+            for x in 0..=max_x {
+                if (current_x == x && current_y == y) {
+                    let char = match direction {
+                        Direction::Up => '^',
+                        Direction::Down => 'v',
+                        Direction::Left => '<',
+                        Direction::Right => '>',
+                    };
+                    display.push(char);
+                    continue;
+                }
+
+                let Some(point) = self.grid.get(&(x, y)) else {
+                    panic!();
+                };
+                if (point.is_blockage) {
+                    display.push('#');
+                    continue;
+                }
+                display.push('.');
+            }
+            display.push('\n');
+        }
+        display.push_str("\n\n");
+        print!("{}", display);
+    }
 }
 
 #[derive(Debug, PartialEq, Eq, Hash, Clone)]
