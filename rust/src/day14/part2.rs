@@ -13,7 +13,7 @@ use crate::{
 pub fn solve(input: &Input, x_size: i32, y_size: i32) -> Output {
     let mut answers = Vec::new();
     let mut framebuffer = Framebuffer::new(10_000);
-    for i in 0..10_000 {
+    for i in 7093..7094 {
         let mut end_points = HashMap::new();
         for robot in input {
             let (x, y) = robot.start_point;
